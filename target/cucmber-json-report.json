@@ -1,0 +1,45 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 24395769063,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HooksClass.setUp()"
+            }
+          }
+        ],
+        "line": 3,
+        "name": "Simple Scenario",
+        "description": "",
+        "id": "sample-feature;simple-scenario",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 30952263380,
+              "status": "passed"
+            },
+            "line": 4,
+            "name": "This is simple given step",
+            "match": {
+              "location": "SimpleTest.sampleTest()"
+            },
+            "keyword": "Given "
+          }
+        ]
+      }
+    ],
+    "name": "Sample feature",
+    "description": "",
+    "id": "sample-feature",
+    "keyword": "Feature",
+    "uri": "SampleFeature.feature"
+  }
+]

@@ -6,27 +6,82 @@
         "before": [
           {
             "result": {
-              "duration": 24395769063,
+              "duration": 9708927075,
               "status": "passed"
             },
             "match": {
-              "location": "HooksClass.setUp()"
+              "location": "BaseClass.setUp(Scenario)"
             }
           }
         ],
         "line": 3,
-        "name": "Simple Scenario",
+        "name": "Simple Scenario_one",
         "description": "",
-        "id": "sample-feature;simple-scenario",
+        "id": "sample-feature;simple-scenario-one",
+        "after": [
+          {
+            "result": {
+              "duration": 1583388362,
+              "status": "passed"
+            },
+            "match": {
+              "location": "BaseClass.tearDown(Scenario)"
+            }
+          }
+        ],
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 30952263380,
+              "duration": 1472085235,
               "status": "passed"
             },
             "line": 4,
+            "name": "This is simple given step",
+            "match": {
+              "location": "SimpleTest.sampleTest()"
+            },
+            "keyword": "Given "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 5728093621,
+              "status": "passed"
+            },
+            "match": {
+              "location": "BaseClass.setUp(Scenario)"
+            }
+          }
+        ],
+        "line": 6,
+        "name": "Simple Scenario_two",
+        "description": "",
+        "id": "sample-feature;simple-scenario-two",
+        "after": [
+          {
+            "result": {
+              "duration": 1348841438,
+              "status": "passed"
+            },
+            "match": {
+              "location": "BaseClass.tearDown(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 1111924975,
+              "status": "passed"
+            },
+            "line": 7,
             "name": "This is simple given step",
             "match": {
               "location": "SimpleTest.sampleTest()"

@@ -1,15 +1,11 @@
 package pageobjects;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import basemodule.BaseClass;
 
-import basemodule.HooksClass;
-
-
-
-public class LoginPage extends HooksClass{
+public class LoginPage extends BaseClass{
 	
 	public String appURL = "http://127.0.0.1:9090/espocrm/";
 	
@@ -21,11 +17,16 @@ public class LoginPage extends HooksClass{
 		PageFactory.initElements(driver, this);
 	}
 	
-	public void loginApplication(){
+	public void launchURL(String appURL) throws Exception{
 		driver.get(appURL);
+		reportResult("Verifying applicaiton is launched successfully", loginUsername.isDisplayed(), true);
+	}
+	
+	public void loginApplication() throws Exception{		
 		loginUsername.sendKeys("nmakkena");
 		loginPassword.sendKeys("naren1306");
 		loginBtn.click();
+		
 	}
 	
 	

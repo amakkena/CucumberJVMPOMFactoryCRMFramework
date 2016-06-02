@@ -14,4 +14,8 @@ public class HomePage extends BaseClass {
 	
 	@FindBy(xpath="//div[@role='navigation']") WebElement homepageNavigationBar;
 	
+	public boolean isHomePageNavigationBarDisplayed(){
+		return homepageNavigationBar.isDisplayed();
+	}
+	
 }

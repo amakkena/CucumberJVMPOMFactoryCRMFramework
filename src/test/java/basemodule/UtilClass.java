@@ -163,6 +163,15 @@ public class UtilClass {
 			}
 		}
 	
+	public void waitFor(int seconds){
+		try {
+			Thread.sleep(seconds*1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/***
 	 * @author NAENDRA MAKKENA
 	 * @description function is verify condition and report the result with pass/fail to extent report log

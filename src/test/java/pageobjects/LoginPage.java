@@ -22,11 +22,11 @@ public class LoginPage extends BaseClass{
 		reportResult("Verifying applicaiton is launched successfully", loginUsername.isDisplayed(), true);
 	}
 	
-	public void loginApplication() throws Exception{		
+	public HomePage loginApplication(){		
 		loginUsername.sendKeys("nmakkena");
 		loginPassword.sendKeys("naren1306");
 		loginBtn.click();
-		
+		return new HomePage();
 	}
 	
 	

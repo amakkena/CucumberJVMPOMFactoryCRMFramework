@@ -13,9 +13,20 @@ public class HomePage extends BaseClass {
 	}
 	
 	@FindBy(xpath="//div[@role='navigation']") WebElement homepageNavigationBar;
+	@FindBy(id="nav-menu-dropdown") WebElement adminNavigationMenu;
+	@FindBy(xpath="//*[@aria-labelledby='nav-menu-dropdown']//*[text()='Administration']") WebElement administrationMenuItem;
+
 	
 	public boolean isHomePageNavigationBarDisplayed(){
 		return homepageNavigationBar.isDisplayed();
+	}
+	
+	public AdministrationPage navigateToAdministrationPage(){
+		adminNavigationMenu.click();
+		waitFor(2);
+		administrationMenuItem.click();
+		waitFor(2);
+		return new AdministrationPage();
 	}
 	
 }

@@ -1,32 +1,36 @@
 package basemodule;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.ExtentTest;
-import com.relevantcodes.extentreports.LogStatus;
-import com.relevantcodes.extentreports.NetworkMode;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import Exception.FilloException;
 import Fillo.Connection;
 import Fillo.Fillo;
 import Fillo.Recordset;
 
-public class UtilClass {
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+import com.relevantcodes.extentreports.NetworkMode;
+
+public class UtilClass{
 	public static WebDriver driver;	
 	public static ExtentReports extent;
 	public static ExtentTest test;
-	public static boolean isReportSetupCompleted = false;
-	
+	public static boolean isReportSetupCompleted = false;	
 	public static String reportPath;
 	public static String imagesPath;
 	public static boolean scenarioResultFlag;
@@ -35,6 +39,25 @@ public class UtilClass {
 	public static Recordset setupData;
 	private static boolean dunit = false;
 	
+	
+	public void launchApplication() throws Exception{
+		String browserName = testData.getField("Browser_Name");
+		String appURL = setupData.getField("CRM_URL");
+		if(browserName.equalsIgnoreCase("IE")){
+			System.setProperty("webdriver.ie.driver",System.getProperty("user.dir")+"/drivers/IEDriverServer.exe");
+			driver = new InternetExplorerDriver();
+		}
+		else if(browserName.equalsIgnoreCase("FF")||browserName.equalsIgnoreCase("FireFox"))
+			driver = new FirefoxDriver();
+		else{
+			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/drivers/chromedriver.exe");
+			driver = new ChromeDriver();
+		}
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		driver.manage().timeouts().implicitlyWait(Integer.parseInt(setupData.getField("Element_Timeout")), TimeUnit.SECONDS);	
+		driver.get(appURL);
+	}
 	/***
 	 * @author NARENDRA MAKKENA
 	 * @description To fetch data from excel in any of the sheet with matching with scenario name
@@ -83,7 +106,7 @@ public class UtilClass {
 		imagesPath = reportPath+"/images";
 		new File(reportPath).mkdir();
 		new File(imagesPath).mkdir();
-		extent = new ExtentReports(reportPath+"/CRM_application_execution_Summary.html",NetworkMode.OFFLINE);
+		extent = new ExtentReports(reportPath+"/CRM_application_execution_Summary.html",false,NetworkMode.OFFLINE);
 		isReportSetupCompleted = true;
 	}
 	
@@ -129,11 +152,16 @@ public class UtilClass {
 	 * @return snap file path in String format 
 	 * @param No parameters
 	 */
-	public String getSnap() throws Exception{
+	public String getSnap(){
 			String snapPath="";		
 				File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 				snapPath = imagesPath+"/"+"img_"+getCurrentTimeStamp()+".png";
-				FileUtils.copyFile(scrFile, new File(snapPath));	
+				try {
+					FileUtils.copyFile(scrFile, new File(snapPath));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
 				return snapPath;		
 		}
 	
@@ -146,7 +174,7 @@ public class UtilClass {
 	 * 				snapForPass (true if we need snap of pass step as well. By default snap will be taken for fail step	 
 
 	 */
-	public void reportResult(String stepDescription,boolean stepStatus,boolean snapForPass) throws Exception{
+	public void reportResult(String stepDescription,boolean stepStatus,boolean snapForPass){
 			if(stepStatus){
 				if(snapForPass){
 					test.log(LogStatus.PASS, stepDescription +" - PASS", test.addScreenCapture(getSnap()));

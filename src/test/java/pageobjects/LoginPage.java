@@ -23,8 +23,8 @@ public class LoginPage extends BaseClass{
 	}
 	
 	public HomePage loginApplication(){		
-		loginUsername.sendKeys("nmakkena");
-		loginPassword.sendKeys("naren1306");
+		loginUsername.sendKeys("XXXXXX");
+		loginPassword.sendKeys("XXXXXXXXXX");
 		loginBtn.click();
 		return new HomePage();
 	}

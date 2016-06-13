@@ -1,26 +1,18 @@
 package pageobjects;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import basemodule.actions.WebActions;
 
-import basemodule.UtilClass;
 
-public class AdministrationPage extends UtilClass{
+public class AdministrationPage extends WebActions{
 	
-	
-	@FindBy(xpath="//*[@class='page-header']/h3[text()='Administration']") WebElement administrationPageHeader;
-	@FindBy(xpath="//*[@class='table table-bordered'][2]//a[text()='Users']") WebElement usersManagementLink;
-	public AdministrationPage(){
-		PageFactory.initElements(driver, this);
-	}
+	public static String administrationPageHeader = "//*[@class='page-header']/h3[text()='Administration']";
+	public static String usersManagementLink = "//*[@class='table table-bordered'][2]//a[text()='Users']";
 
-	public boolean isAdministrationPageDisplayed(){
-		return administrationPageHeader.isDisplayed();
-	}
 	
-	public UsersManagementPage navigateUsersPage(){
-		usersManagementLink.click();
-		return new UsersManagementPage();
+
+	
+	public static void navigateUsersPage(){
+		click(usersManagementLink);
+	
 	}
 }

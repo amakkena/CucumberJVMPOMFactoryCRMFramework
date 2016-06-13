@@ -1,4 +1,4 @@
-package basemodule;
+package basemodule.actions;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,12 +9,15 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.support.ui.Select;
 
 import Exception.FilloException;
 import Fillo.Connection;
@@ -26,7 +29,8 @@ import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 import com.relevantcodes.extentreports.NetworkMode;
 
-public class UtilClass{
+public class WebActions {
+	
 	public static WebDriver driver;	
 	public static ExtentReports extent;
 	public static ExtentTest test;
@@ -39,10 +43,54 @@ public class UtilClass{
 	public static Recordset setupData;
 	private static boolean dunit = false;
 	
+	public static By byLocator(String locatorString){
+		return By.xpath(locatorString);
+	}
 	
-	public void launchApplication() throws Exception{
+	public static void click(String locatorString){
+		try{
+			driver.findElement(byLocator(locatorString)).click();
+		}catch(Exception e){
+			printLog("Clicking on Element with xpath "+locatorString, false, true);
+		}
+	}
+	
+	public static void type(String locatorString,String text){
+		try{
+			driver.findElement(byLocator(locatorString)).sendKeys(text);
+		}catch(Exception e){
+			printLog("Typing text on Element with xpath "+locatorString, false, true);
+		}
+	}
+	
+	public void selectDropdownByText(WebElement element,String text){
+		Select sel = new Select(element);
+		sel.selectByVisibleText(text);
+		
+	}
+	
+	public void selectDropdownByValue(WebElement element,String value){
+		Select sel = new Select(element);
+		sel.selectByValue(value);
+	}
+	
+	public void selectDropdownByIndex(WebElement element,int index){
+		Select sel = new Select(element);
+		sel.selectByIndex(index);
+	}
+	
+	public static boolean isElementDisplayed(String locatorString){
+		try{
+			return driver.findElement(byLocator(locatorString)).isDisplayed();
+		}catch(Exception e){
+			printLog("Checking element is displayed with xpath "+locatorString, false, true);
+			return false;
+		}
+	}
+	//################### Function to launch application #################################
+	public static void launchApplication(String appName) throws Exception{
 		String browserName = testData.getField("Browser_Name");
-		String appURL = setupData.getField("CRM_URL");
+		String appURL = setupData.getField(appName);
 		if(browserName.equalsIgnoreCase("IE")){
 			System.setProperty("webdriver.ie.driver",System.getProperty("user.dir")+"/drivers/IEDriverServer.exe");
 			driver = new InternetExplorerDriver();
@@ -58,6 +106,9 @@ public class UtilClass{
 		driver.manage().timeouts().implicitlyWait(Integer.parseInt(setupData.getField("Element_Timeout")), TimeUnit.SECONDS);	
 		driver.get(appURL);
 	}
+	//################### End of Function to launch application #################################
+	
+	//######################## Reading TestData related functions #############################
 	/***
 	 * @author NARENDRA MAKKENA
 	 * @description To fetch data from excel in any of the sheet with matching with scenario name
@@ -87,7 +138,9 @@ public class UtilClass{
 				}				
 			}		
 	}
+	//##################### End of Reading TestData related functions #########################
 	
+	// ######################## Extent Report related functions ############################
 	/***
 	 * @author NAENDRA MAKKENA
 	 * @description function is to create reporting folder and html file using extentreports. Also establishes connection to testdata excel.
@@ -152,7 +205,7 @@ public class UtilClass{
 	 * @return snap file path in String format 
 	 * @param No parameters
 	 */
-	public String getSnap(){
+	public static String getSnap(){
 			String snapPath="";		
 				File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 				snapPath = imagesPath+"/"+"img_"+getCurrentTimeStamp()+".png";
@@ -164,7 +217,6 @@ public class UtilClass{
 				}	
 				return snapPath;		
 		}
-	
 	/***
 	 * @author NAENDRA MAKKENA
 	 * @description function is verify condition and report the result with pass/fail to extent report log
@@ -174,7 +226,7 @@ public class UtilClass{
 	 * 				snapForPass (true if we need snap of pass step as well. By default snap will be taken for fail step	 
 
 	 */
-	public void reportResult(String stepDescription,boolean stepStatus,boolean snapForPass){
+	public static void printLog(String stepDescription,boolean stepStatus,boolean snapForPass){
 			if(stepStatus){
 				if(snapForPass){
 					test.log(LogStatus.PASS, stepDescription +" - PASS", test.addScreenCapture(getSnap()));
@@ -191,12 +243,11 @@ public class UtilClass{
 			}
 		}
 	
-	public void waitFor(int seconds){
+	public static void waitFor(int seconds){
 		try {
 			Thread.sleep(seconds*1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+						e.printStackTrace();
 		}
 	}
 	
@@ -210,7 +261,7 @@ public class UtilClass{
 	 * 				exitTest (true if we want to exit the current test and continue to next step when stepStatus returns false
 
 	 */
-	public void reportResult(String stepDescription,boolean stepStatus,boolean snapForPass,boolean exitTest) throws Exception{
+	public void printLog(String stepDescription,boolean stepStatus,boolean snapForPass,boolean exitTest) throws Exception{
 			if(stepStatus){
 				if(snapForPass){
 					test.log(LogStatus.PASS, stepDescription +" - PASS", test.addScreenCapture(getSnap()));
@@ -229,6 +280,6 @@ public class UtilClass{
 					test.log(LogStatus.FAIL, stepDescription +" - FAIL", test.addScreenCapture(getSnap()));
 			}
 	}
-		// ######################## End of Extent Report related functions ############################
-		
+	// ######################## End of Extent Report related functions ############################
+	
 }

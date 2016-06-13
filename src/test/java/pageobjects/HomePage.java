@@ -1,32 +1,23 @@
 package pageobjects;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import basemodule.actions.WebActions;
 
-import basemodule.BaseClass;
-
-public class HomePage extends BaseClass {
+public class HomePage extends WebActions {
 	
-	public HomePage(){
-		PageFactory.initElements(driver, this);
-	}
-	
-	@FindBy(xpath="//div[@role='navigation']") WebElement homepageNavigationBar;
-	@FindBy(id="nav-menu-dropdown") WebElement adminNavigationMenu;
-	@FindBy(xpath="//*[@aria-labelledby='nav-menu-dropdown']//*[text()='Administration']") WebElement administrationMenuItem;
+	public static String homepageNavigationBar = "//div[@role='navigation']";
+	public static String adminNavigationMenu = "//*[@id='nav-menu-dropdown']";
+	public static String administrationMenuItem = "//*[@aria-labelledby='nav-menu-dropdown']//*[text()='Administration']";
 
 	
-	public boolean isHomePageNavigationBarDisplayed(){
-		return homepageNavigationBar.isDisplayed();
-	}
 	
-	public AdministrationPage navigateToAdministrationPage(){
-		adminNavigationMenu.click();
+	
+	public static void navigateToAdministrationPage(){
+		click(adminNavigationMenu);
 		waitFor(2);
-		administrationMenuItem.click();
+		click(administrationMenuItem);
 		waitFor(2);
-		return new AdministrationPage();
+		printLog("Verify navigation to adminstration page",isElementDisplayed(AdministrationPage.administrationPageHeader),true);
+		
 	}
 	
 }

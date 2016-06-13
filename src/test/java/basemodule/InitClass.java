@@ -1,10 +1,11 @@
 package basemodule;
 
+import basemodule.actions.WebActions;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 
-public class BaseClass extends UtilClass{
+public class InitClass extends WebActions{
 	
 	@Before
 	public void setUp(Scenario scenario) throws Exception{
@@ -13,8 +14,7 @@ public class BaseClass extends UtilClass{
 		}
 		flushReportDataToHtml();		
 		getScenarioData(scenario.getName().toString());
-		test = extent.startTest(scenario.getName().toString());
-		launchApplication();
+		test = extent.startTest(scenario.getName().toString());		
 	}	
 	
 	@After

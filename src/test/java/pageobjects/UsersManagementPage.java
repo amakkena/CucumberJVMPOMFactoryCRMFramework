@@ -1,21 +1,10 @@
 package pageobjects;
+import basemodule.actions.WebActions;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+public class UsersManagementPage extends WebActions{
 
-import basemodule.UtilClass;
-
-public class UsersManagementPage extends UtilClass{
-
-	@FindBy(xpath="//*[@href='#User/create']") WebElement createUserLink;
+	public static String createUserLink = "//*[@href='#User/create']";
 	
-	public UsersManagementPage(){
-		PageFactory.initElements(driver, this);
-	}
 	
-	public boolean isCreateUserLinkDisplayed(){
-		return createUserLink.isDisplayed();
-	}
 	
 }
